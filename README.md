@@ -1,47 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<h1 align="center">SOC Home Lab – Cyber Attack Detection</h1>
 
+<p align="center">
+A practical <b>Security Operations Center (SOC) Home Lab</b> project demonstrating how cyber attacks can be simulated and investigated using security monitoring tools.
+</p>
 
+<hr>
 
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>SOC Home Lab – Cyber Attack Detection</h1>
+<h2>Project Overview</h2>
 
 <p>
-A practical <b>Security Operations Center (SOC) home lab</b> built to simulate real-world cyber attacks and investigate security events.
-The lab uses <b>Kali Linux as an attacker machine</b> and a <b>Windows host system as the target</b>, allowing analysis of attack activity through system logs and network scans.
+This project demonstrates a simulated cyber attack scenario where an attacker machine (<b>Kali Linux</b>) performs reconnaissance and network scanning against a target Windows system.
 </p>
 
 <p>
-This project demonstrates how <b>SOC analysts detect suspicious activity</b> through log monitoring and network reconnaissance analysis.
+The activity is then analyzed using:
 </p>
+
+<ul>
+<li>Windows Security Logs</li>
+<li>Splunk SIEM Dashboard</li>
+<li>Network Packet Analysis using Wireshark</li>
+</ul>
+
+<p>
+The goal of this lab is to understand how <b>Security Operations Center (SOC) analysts detect suspicious activities and investigate potential security incidents.</b>
+</p>
+
+<hr>
 
 <h2>Lab Architecture</h2>
 
-<div class="architecture">
+<pre>
+Kali Linux (Attacker VM)
+        |
+        |  Network Reconnaissance (Nmap)
+        |
+Windows Host Machine (Target)
+        |
+        |  Security Event Logs
+        |
+Splunk SIEM Monitoring
+        |
+SOC Investigation
+</pre>
 
-Kali Linux (Attacker VM) <br><br>
-↓ <br><br>
-Network Reconnaissance (Nmap) <br><br>
-↓ <br><br>
-Windows Host Machine (Target) <br><br>
-↓ <br><br>
-Windows Security Event Logs <br><br>
-↓ <br><br>
-Security Monitoring & Investigation
-
-</div>
+<hr>
 
 <h2>Tools Used</h2>
 
 <table>
-
 <tr>
 <th>Tool</th>
 <th>Purpose</th>
@@ -49,7 +56,7 @@ Security Monitoring & Investigation
 
 <tr>
 <td>Kali Linux</td>
-<td>Attacker machine used to perform reconnaissance</td>
+<td>Attacker machine used to perform network reconnaissance</td>
 </tr>
 
 <tr>
@@ -63,110 +70,138 @@ Security Monitoring & Investigation
 </tr>
 
 <tr>
-<td>VirtualBox</td>
-<td>Creating a virtual cybersecurity lab environment</td>
+<td>Splunk SIEM</td>
+<td>Security monitoring and threat detection</td>
 </tr>
 
 <tr>
-<td>Splunk (Optional)</td>
-<td>Security Information and Event Management (SIEM) platform</td>
+<td>Wireshark</td>
+<td>Network traffic packet analysis</td>
+</tr>
+
+<tr>
+<td>VirtualBox</td>
+<td>Virtual lab environment</td>
 </tr>
 
 </table>
 
-<h2>Attack Scenario</h2>
+<hr>
+
+<h2>Attack Simulation</h2>
 
 <p>
-The attacker machine performs <b>network reconnaissance</b> on the target Windows system using <b>Nmap</b>.
+The attacker machine performs network reconnaissance using <b>Nmap</b> to identify open ports and services on the target system.
 </p>
 
-<p>The goal is to identify:</p>
+<h3>Command Used</h3>
+
+<pre>
+nmap -sS &lt;target-ip&gt;
+</pre>
+
+<h3>Aggressive Scan</h3>
+
+<pre>
+nmap -A &lt;target-ip&gt;
+</pre>
+
+<p>
+These scans help attackers discover:
+</p>
 
 <ul>
-
 <li>Open ports</li>
 <li>Running services</li>
+<li>Operating system information</li>
 <li>Network distance</li>
-<li>Operating system fingerprint</li>
-
 </ul>
 
-<h2>Commands Used</h2>
+<hr>
 
-<p>Basic SYN scan:</p>
+<h2>Network Scan Result</h2>
 
-<code>
-nmap -sS &lt;target-ip&gt;
-</code>
+<p>The attacker discovers open ports and services running on the target system.</p>
 
-<p>Aggressive scan:</p>
+<img src="screenshots/Namp_Scan.jpg" width="800">
 
-<code>
-nmap -A &lt;target-ip&gt;
-</code>
-
-<h2>Network Scan Results</h2>
-
-<p>The attacker discovers open ports and services on the target system.</p>
+<p><b>Key Findings</b></p>
 
 <ul>
-
-<li>Open ports</li>
-<li>Service detection</li>
-<li>Host availability</li>
-
+<li>Open TCP ports detected</li>
+<li>Service versions identified</li>
+<li>Operating system fingerprinting</li>
 </ul>
 
-<img src="screenshots/nmap_scan.png" alt="Nmap Scan Result">
+<hr>
 
-<h2>Operating System Detection</h2>
-
-<p>
-Using aggressive scanning techniques, Nmap attempts to identify the operating system and services running on the target host.
-</p>
-
-<img src="screenshots/nmap_os_detection.png" alt="OS Detection">
-
-<h2>Failed Login Detection</h2>
+<h2>Windows Security Log Analysis</h2>
 
 <p>
-Windows records failed authentication attempts in the <b>Security Log</b>.
+Windows records failed authentication attempts in the <b>Security Event Log</b>.
 </p>
 
 <p><b>Event ID:</b> 4625</p>
 
-<p><b>Meaning:</b> An account failed to log on</p>
+<p><b>Description:</b> An account failed to log on</p>
 
-<p>Security analysts monitor this event to detect:</p>
-
-<ul>
-
-<li>Brute force attacks</li>
-<li>Unauthorized login attempts</li>
-<li>Credential abuse</li>
-
-</ul>
-
-<h2>Security Log Investigation</h2>
-
-<p>Example failed login event recorded in Windows Event Viewer.</p>
-
-<img src="screenshots/failed_login_event.png" alt="Windows Failed Login Event">
-
-<p><b>Key fields analyzed:</b></p>
-
-<ul>
-
-<li>Logon Type</li>
-<li>Account Name</li>
-<li>Failure Reason</li>
-<li>Source IP Address</li>
-
-</ul>
+<img src="screenshots/Windows_Event_Viewer_Logs.jpg" width="800">
 
 <p>
-These logs help SOC analysts <b>identify suspicious login patterns</b>.
+SOC analysts monitor this event to detect potential security threats such as:
 </p>
+
+<ul>
+<li>Brute force login attacks</li>
+<li>Unauthorized login attempts</li>
+<li>Credential abuse</li>
+</ul>
+
+<hr>
+
+<h2>Splunk SIEM Monitoring</h2>
+
+<p>
+Splunk is used to collect and analyze security logs from the system.
+</p>
+
+<p>The dashboard visualizes authentication failures and suspicious activity.</p>
+
+<img src="screenshots/Splunk_Dashboard_Logs.jpg" width="800">
+
+<p>
+SOC analysts use this dashboard to identify attack patterns and monitor system security.
+</p>
+
+<hr>
+
+<h2>Splunk Alert Rule</h2>
+
+<p>
+An alert rule was configured in Splunk to detect excessive Nmap scanning activity.
+</p>
+
+<img src="screenshots/Splunk_Alert_Rule.jpg" width="800">
+
+<p>
+The alert triggers when multiple scanning attempts are detected from a single source IP address.
+</p>
+
+<hr>
+
+<h2>Network Traffic Analysis</h2>
+
+<p>
+Wireshark was used to capture and analyze network packets generated during the scanning activity.
+</p>
+
+<img src="screenshots/WireShark_Traffic_Capture.jpg" width="800">
+
+<p>
+Packet analysis allows SOC analysts to understand the communication between the attacker and target machine.
+</p>
+
+<hr>
 
 <h2>SOC Investigation Workflow</h2>
 
@@ -174,13 +209,15 @@ These logs help SOC analysts <b>identify suspicious login patterns</b>.
 
 <li><b>Reconnaissance Detection</b> – Identify suspicious network scanning activity</li>
 
-<li><b>Log Analysis</b> – Investigate authentication events in Windows Security logs</li>
+<li><b>Log Analysis</b> – Investigate authentication failures in Windows logs</li>
 
 <li><b>Threat Identification</b> – Determine whether activity is malicious</li>
 
 <li><b>Incident Documentation</b> – Record evidence and findings</li>
 
 </ol>
+
+<hr>
 
 <h2>Skills Demonstrated</h2>
 
@@ -189,44 +226,44 @@ These logs help SOC analysts <b>identify suspicious login patterns</b>.
 <li>Network reconnaissance analysis</li>
 <li>Port scanning investigation</li>
 <li>Windows security log analysis</li>
+<li>SIEM monitoring using Splunk</li>
+<li>Network packet analysis with Wireshark</li>
 <li>Cyber attack simulation</li>
-<li>SOC monitoring fundamentals</li>
-<li>Incident investigation workflow</li>
 
 </ul>
+
+<hr>
 
 <h2>Learning Outcomes</h2>
 
 <ul>
 
-<li>Understanding network scanning techniques</li>
-<li>Analyzing reconnaissance phase of cyber attacks</li>
-<li>Monitoring Windows authentication failures</li>
-<li>Performing basic SOC investigations</li>
+<li>Understanding reconnaissance phase of cyber attacks</li>
+<li>Investigating authentication failure logs</li>
+<li>Monitoring security events using SIEM tools</li>
+<li>Analyzing network packets for suspicious activity</li>
 
 </ul>
+
+<hr>
 
 <h2>Future Improvements</h2>
 
 <ul>
 
-<li>Integrating Splunk SIEM for centralized log monitoring</li>
-<li>Adding Wireshark packet analysis</li>
-<li>Creating automated alert rules for brute force detection</li>
-<li>Implementing threat detection dashboards</li>
+<li>Automated brute force detection rules</li>
+<li>Integration with threat intelligence feeds</li>
+<li>Real-time SIEM alert notifications</li>
+<li>Advanced anomaly detection dashboards</li>
 
 </ul>
 
-<div class="footer">
+<hr>
 
-<b>Author</b><br>
-Geerla Achyutha<br>
+<h2>Author</h2>
+
+<p>
+<b>Geerla Achyutha</b><br>
 Cybersecurity Enthusiast<br>
 GitHub: https://github.com/Achyuth7891
-
-</div>
-
-</div>
-
-</body>
-</html>
+</p>
